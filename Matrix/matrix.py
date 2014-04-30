@@ -13,6 +13,8 @@ Longitud=""
 y= None
 
 def leer():
+	global Latitud
+	global Longitud
 	f = open("lat_long.txt")
 	lectura=f.read()
 	f.close()
@@ -21,8 +23,6 @@ def leer():
 		Latitud= Latitud+letra
 		if letra== ",":
 			break
-	global Latitud
-	global Longitud
 	Longitud= lectura.replace(Latitud, "")
 	Latitud=Latitud.replace(",", "")
 
@@ -57,6 +57,7 @@ sensor1 = "gpio5"
 sensor2="gpio4"
 y=None
 def detectarpcduino(estado_queue, permiso_queue):
+	
 	estado_queue.put(None)
 	while 1:
 		A=gpio.digitalRead(sensor1)
@@ -137,7 +138,10 @@ def decidir(estado_queue, permiso_queue):
 			permiso_queue.put(False)			
 
 def main():
-
+	global Latitud
+	global Longitud
+	global cmd
+	cmd= "compartido"
 	print "Creando procesos de comunicación..."
 	estado_queue =multiprocessing.Queue()
 	permiso_queue =multiprocessing.Queue()
@@ -159,7 +163,6 @@ def main():
 	while(cmd != "exit"):
 		print "Ingresa <exit> para salir " 
 		cmd = raw_input("Esperando codigo... ")
-		global cmd
 		leer()
 		permiso= conectar()
 		print "permiso: "
@@ -172,8 +175,7 @@ def main():
 
 		Latitud=""
 		Longitud=""
-		global Latitud
-		global Longitud
+
 
 	print "Terminando procesos..."
 	t.terminate()
