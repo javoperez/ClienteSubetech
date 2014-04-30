@@ -91,7 +91,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 				estado_queue.put("sale")
 
 		print estado_queue.get(), "aqui"
-		time.sleep(.1)
+		time.sleep(1)
 
 		
 ##PRUEBA
