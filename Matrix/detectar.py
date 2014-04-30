@@ -11,13 +11,12 @@ sensor2="gpio4"
 
 
 def detectarpcduino(estado_queue, permiso_queue):
-	estado= None
+	estado_queue.put(None)
 	while 1:
 		A=gpio.digitalRead(sensor1)
 		B= gpio.digitalRead(sensor2)
 
 		if A==True:
-			estado= "entra"
 			while B==False and y!= "salir":
 				#print "ciclo 1"
 				B=gpio.digitalRead(sensor2)
@@ -27,11 +26,12 @@ def detectarpcduino(estado_queue, permiso_queue):
 						B=gpio.digitalRead(sensor2)
 						#print "Ciclo 2"
 					y= "salir"
+			estado_queue.put("entra")
 
 		y=None
 			
 		if B==True:
-				estado= "sale"
+				
 				while A==False  and y!= "salir":
 					#print "ciclo 1"
 					A=gpio.digitalRead(sensor1)
@@ -41,12 +41,13 @@ def detectarpcduino(estado_queue, permiso_queue):
 							A=gpio.digitalRead(sensor1)
 							#Sprint "Ciclo 2"
 						y= "salir"
+				estado_queue.put("sale")
 		
-		if estado=='sale' or estado== 'entra':
-			print estado
+		if estado_queue.get()=='sale' or estado_queue.get()== 'entra':
+			print estado_queue.get()
 			time.sleep(1)
 			
-		estado= None
+		#estado= None
 
 
 def main():

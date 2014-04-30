@@ -33,7 +33,7 @@ def conectar():
 
 		params = urllib.urlencode({'clave': y, 'longitud':Longitud, 'latitud':Latitud})
 		headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-		conn = httplib.HTTPConnection("162.243.55.207:49272")
+		conn = httplib.HTTPConnection("162.243.55.207:49311")
 		conn.request("POST", "/descontar/", params, headers)
 		response = conn.getresponse()
 		print response.status, response.reason

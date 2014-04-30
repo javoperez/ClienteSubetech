@@ -10,7 +10,7 @@ def decidir(estado_queue, permiso_queue):
 	### DESCOMENTAR EN PCDUINO
 	rojo = "gpio6"
 	verde = "gpio7"
-	alarma= "gpio9"
+	alarma= "gpio8"
 	gpio.pinMode(rojo, gpio.OUTPUT)
 	gpio.pinMode(verde, gpio.OUTPUT)
 	gpio.pinMode(alarma, gpio.OUTPUT)
@@ -55,7 +55,7 @@ def main():
 	t.daemon = True
 
 	estado_queue.put("entra")
-	permiso_queue.put(True)
+	permiso_queue.put(False)
 
 
 	try:
