@@ -91,14 +91,14 @@ def detectarpcduino(estado_queue, permiso_queue):
 				estado_queue.put("sale")
 
 		print estado_queue.get(), "aqui"
-		if estado_queue.get()=='sale' or estado_queue.get()== 'entra':
-			print estado_queue.get()
-			time.sleep(.1)
+		time.sleep(.1)
+
 		
 ##PRUEBA
 
 def decidir(estado_queue, permiso_queue):
 	pass
+
 """	### DESCOMENTAR EN PCDUINO
 	rojo = "gpio6"
 	verde = "gpio7"
