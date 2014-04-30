@@ -130,8 +130,6 @@ def decidir(estado_queue, permiso_queue):
 			gpio.digitalWrite(rojo, gpio.HIGH)
 			print "Rojo y alarma prendidos.. delay"
 			time.sleep(3)
-			global Estado
-			global Permiso
 			Estado=False
 			Permiso=False
 			
