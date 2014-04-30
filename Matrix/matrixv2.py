@@ -151,11 +151,11 @@ def main():
 		time.sleep(.1)
 		t2.start()
 		time.sleep(.1)
-
+"""
 		##INICIALIZO VARIABLES por primera vez
 		permiso_queue.put("inicial")
 		estado_queue.put("inicial")
-		
+		"""
 	except:
 		print "ERROR: No se pudieron crear los procesos de comunicación."
 
@@ -172,6 +172,7 @@ def main():
 			Permiso=False
 		time.sleep(1)
 		#IMPRIMIR PERMISO Y ESTADO	
+		print estado_queue.qsize()
 		temporalestado= estado_queue.get()
 		estado_queue.put(temporalestado)
 
