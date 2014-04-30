@@ -98,7 +98,8 @@ def detectarpcduino(estado_queue, permiso_queue):
 ##PRUEBA
 
 def decidir(estado_queue, permiso_queue):
-	### DESCOMENTAR EN PCDUINO
+	pass
+"""	### DESCOMENTAR EN PCDUINO
 	rojo = "gpio6"
 	verde = "gpio7"
 	alarma= "gpio9"
@@ -137,7 +138,7 @@ def decidir(estado_queue, permiso_queue):
 			time.sleep(.2)
 			estado_queue.put("sale")
 			permiso_queue.put(False)			
-
+"""
 def main():
 
 	print "Creando procesos de comunicación..."
