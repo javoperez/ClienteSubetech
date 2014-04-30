@@ -86,7 +86,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 						print "Ciclo 2B"
 					y= "salir"
 			estado_queue.put(False)
-		print "estado1" , Estado
+		#print "estado1" , Estado
 		time.sleep(1)
 
 		
