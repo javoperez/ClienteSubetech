@@ -90,7 +90,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 						y= "salir"
 				estado_queue.put("sale")
 
-		print estado_queue.get()
+		print estado_queue.get(), "aqui"
 		if estado_queue.get()=='sale' or estado_queue.get()== 'entra':
 			print estado_queue.get()
 			time.sleep(.1)
