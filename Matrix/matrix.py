@@ -21,7 +21,8 @@ def leer():
 		Latitud= Latitud+letra
 		if letra== ",":
 			break
-
+	global Latitud
+	global Longitud
 	Longitud= lectura.replace(Latitud, "")
 	Latitud=Latitud.replace(",", "")
 
@@ -31,8 +32,7 @@ def leer():
 		Longitud= "-99.2206003"
 	print "Latitud", Latitud
 	print "Longitud", Longitud
-	global Latitud
-	global Longitud
+	
 
 def conectar():
 	try:
