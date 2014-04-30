@@ -11,8 +11,8 @@ cmd= ""
 Latitud=""
 Longitud=""
 y= None
-Estado=""
-Permiso""
+Estado=False
+Permiso=""
 
 def leer():
 	global Latitud
@@ -60,42 +60,46 @@ sensor2="gpio4"
 y=None
 def detectarpcduino():
 	
-	Estado=None
 	while 1:
 		A=gpio.digitalRead(sensor1)
 		B= gpio.digitalRead(sensor2)
 		if A==True:
 			while B==False and y!= "salir":
-				#print "ciclo 1"
+				print "ciclo 1A"
 				B=gpio.digitalRead(sensor2)
 				if B==True:
 					A=False 
 					while B==True:
 						B=gpio.digitalRead(sensor2)
-						#print "Ciclo 2"
+						print "Ciclo 2A"
 					y= "salir"
-			Estado="entra"
+			global Estado
+			Estado=True
 
 		y=""
 			
 		if B==True:
 				
 				while A==False  and y!= "salir":
-					#print "ciclo 1"
+					print "ciclo 1B"
 					A=gpio.digitalRead(sensor1)
 					if A==True:
 						B=False 
 						while A==True:
 							A=gpio.digitalRead(sensor1)
-							#Sprint "Ciclo 2"
+							print "Ciclo 2B"
 						y= "salir"
-				Estado="sale"
+				global Estado
+				Estado=False
+		print "estado1" , Estado
 		time.sleep(1)
 
 		
 ##PRUEBA
 
 def decidir():
+	pass
+"""	
 	### DESCOMENTAR EN PCDUINO
 	rojo = "gpio6"
 	verde = "gpio7"
@@ -105,16 +109,7 @@ def decidir():
 	gpio.pinMode(alarma, gpio.OUTPUT)
 	
 	while 1:
-
-		
-		if Estado== None or Estado== "sale":
-			Estado= False
-		if Estado=="entra":
-			Estado= True
-		print "Estado:  ", Estado
-		print "Permiso: ", Permiso
-		
-	
+						
 		if Estado==False and Permiso== False:
 			gpio.digitalWrite(alarma, gpio.LOW)
 			gpio.digitalWrite(rojo, gpio.LOW)
@@ -129,13 +124,19 @@ def decidir():
 			gpio.digitalWrite(rojo, gpio.HIGH)
 			print "Rojo y alarma prendidos.. delay"
 			time.sleep(3)
+			global Estado
+			global Permiso
 			Estado=False
 			Permiso=False
 			
+			
 		if Estado==True and Permiso== True:
 			time.sleep(.2)
+			global Estado
+			global Permiso
 			Estado=False
-			Permiso=False			
+			Permiso=False		
+		time.sleep(1)"""
 
 def main():
 	global Latitud
@@ -173,11 +174,13 @@ def main():
 			Permiso=True
 		else:
 			Permiso=False
+		time.sleep(1)
 		print "permiso: ", Permiso
-
+		print "estado: ", Estado
+		
 		Latitud=""
 		Longitud=""
-
+		
 
 	print "Terminando procesos..."
 	t.terminate()
