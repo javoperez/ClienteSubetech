@@ -86,7 +86,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 						print "Ciclo 2B"
 					y= "salir"
 			estado_queue.put(False)
-		print "estado1" , Estado
+		#print "estado1" , Estado
 		time.sleep(1)
 
 		
@@ -153,8 +153,8 @@ def main():
 		time.sleep(.1)
 
 		##INICIALIZO VARIABLES por primera vez
-		permiso_queue.put(False)
-		estado_queue.put(False)
+		permiso_queue.put("inicial")
+		estado_queue.put("inicial")
 		
 	except:
 		print "ERROR: No se pudieron crear los procesos de comunicación."
