@@ -138,8 +138,6 @@ def decidir(estado_queue, permiso_queue):
 			
 		if Estado==True and Permiso== True:
 			time.sleep(.2)
-			global Estado
-			global Permiso
 			Estado=False
 			Permiso=False		
 		time.sleep(1)
