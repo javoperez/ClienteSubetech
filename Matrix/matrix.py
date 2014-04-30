@@ -11,6 +11,8 @@ cmd= ""
 Latitud=""
 Longitud=""
 y= None
+Estado=""
+Permiso""
 
 def leer():
 	global Latitud
@@ -56,9 +58,9 @@ def conectar():
 sensor1 = "gpio5"
 sensor2="gpio4"
 y=None
-def detectarpcduino(estado_queue, permiso_queue):
+def detectarpcduino():
 	
-	estado_queue.put(None)
+	Estado=None
 	while 1:
 		A=gpio.digitalRead(sensor1)
 		B= gpio.digitalRead(sensor2)
@@ -72,7 +74,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 						B=gpio.digitalRead(sensor2)
 						#print "Ciclo 2"
 					y= "salir"
-			estado_queue.put("entra")
+			Estado="entra"
 
 		y=""
 			
@@ -87,13 +89,13 @@ def detectarpcduino(estado_queue, permiso_queue):
 							A=gpio.digitalRead(sensor1)
 							#Sprint "Ciclo 2"
 						y= "salir"
-				estado_queue.put("sale")
+				Estado="sale"
 		time.sleep(1)
 
 		
 ##PRUEBA
 
-def decidir(estado_queue, permiso_queue):
+def decidir():
 	### DESCOMENTAR EN PCDUINO
 	rojo = "gpio6"
 	verde = "gpio7"
@@ -104,49 +106,50 @@ def decidir(estado_queue, permiso_queue):
 	
 	while 1:
 
-		edo= estado_queue.get()
-		if edo== None or edo== "sale":
-			edo= False
-		if edo=="entra":
-			edo= True
-		perm= permiso_queue.get()
-		print "Estado:  ", edo
-		print "Permiso: ", perm
+		
+		if Estado== None or Estado== "sale":
+			Estado= False
+		if Estado=="entra":
+			Estado= True
+		print "Estado:  ", Estado
+		print "Permiso: ", Permiso
 		
 	
-		if edo==False and perm== False:
+		if Estado==False and Permiso== False:
 			gpio.digitalWrite(alarma, gpio.LOW)
 			gpio.digitalWrite(rojo, gpio.LOW)
 			gpio.digitalWrite(verde, gpio.LOW)
 			print "alarma, rojo y verde apagados"
-		if edo==False and perm== True:
+		if Estado==False and Permiso== True:
 			gpio.digitalWrite(verde, gpio.HIGH)
 			print "verde prendido"
-		if edo==True and perm== False:
+		if Estado==True and Permiso== False:
 
 			gpio.digitalWrite(alarma, gpio.HIGH)
 			gpio.digitalWrite(rojo, gpio.HIGH)
 			print "Rojo y alarma prendidos.. delay"
 			time.sleep(3)
-			estado_queue.put(False)
-			permiso_queue.put(False)
+			Estado=False
+			Permiso=False
 			
-		if edo==True and perm== True:
+		if Estado==True and Permiso== True:
 			time.sleep(.2)
-			print "si"
-			estado_queue.put("sale")
-			permiso_queue.put(False)			
+			Estado=False
+			Permiso=False			
 
 def main():
 	global Latitud
 	global Longitud
 	global cmd
+	global Estado
+	global Permiso
+
 	cmd= "compartido"
 	print "Creando procesos de comunicación..."
-	estado_queue =multiprocessing.Queue()
-	permiso_queue =multiprocessing.Queue()
-	t = multiprocessing.Process(target=detectarpcduino, args=(estado_queue,permiso_queue))
-	t2 = multiprocessing.Process(target=decidir, args=(estado_queue,permiso_queue))
+	"""	estado_queue =multiprocessing.Queue()
+	permiso_queue =multiprocessing.Queue()"""
+	t = multiprocessing.Process(target=detectarpcduino, args=())
+	t2 = multiprocessing.Process(target=decidir, args=())
 
 	t.daemon = True
 	t2.daemon = True
@@ -165,13 +168,12 @@ def main():
 		cmd = raw_input("Esperando codigo... ")
 		leer()
 		permiso= conectar()
-		print "permiso: "
-
+	
 		if permiso==200:
-			permiso_queue.put(True)
+			Permiso=True
 		else:
-			permiso_queue.put(False)
-		print permiso_queue.get()
+			Permiso=False
+		print "permiso: ", Permiso
 
 		Latitud=""
 		Longitud=""
@@ -179,7 +181,9 @@ def main():
 
 	print "Terminando procesos..."
 	t.terminate()
+	t2.terminate()
 	print t
+	print t2
 
 if __name__ == "__main__":
 	main()
