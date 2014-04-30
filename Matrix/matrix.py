@@ -5,7 +5,6 @@ import httplib
 import urllib
 import time
 import multiprocessing
-#####DECOMENTAR LA SIGUIENTE:
 import gpio
 
 cmd= ""
@@ -40,7 +39,7 @@ def conectar():
 
 		params = urllib.urlencode({'clave': cmd,  'longitud':Longitud, 'latitud':Latitud})
 		headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-		conn = httplib.HTTPConnection("localhost:8000")
+		conn = httplib.HTTPConnection("162.243.55.207:49311")
 		conn.request("POST", "/descontar/", params, headers)
 		response = conn.getresponse()
 		#print response.status, response.reason
@@ -53,19 +52,18 @@ def conectar():
 		print sys.exc_info()[:2]
 		return 401
 	return response.status
-	
-def detectarpcduino(estado_queue, permiso_queue):
-	y=None
-	sensor1 = "gpio5"
-	sensor2="gpio4"
-	estado= None
 
+sensor1 = "gpio5"
+sensor2="gpio4"
+y=None
+def detectarpcduino(estado_queue, permiso_queue):
+	estado_queue.put(None)
 	while 1:
+		print "pase"
 		A=gpio.digitalRead(sensor1)
 		B= gpio.digitalRead(sensor2)
 
 		if A==True:
-			estado= "entra"
 			while B==False and y!= "salir":
 				#print "ciclo 1"
 				B=gpio.digitalRead(sensor2)
@@ -75,11 +73,12 @@ def detectarpcduino(estado_queue, permiso_queue):
 						B=gpio.digitalRead(sensor2)
 						#print "Ciclo 2"
 					y= "salir"
+			estado_queue.put("entra")
 
 		y=None
 			
 		if B==True:
-				estado= "sale"
+				
 				while A==False  and y!= "salir":
 					#print "ciclo 1"
 					A=gpio.digitalRead(sensor1)
@@ -89,11 +88,14 @@ def detectarpcduino(estado_queue, permiso_queue):
 							A=gpio.digitalRead(sensor1)
 							#Sprint "Ciclo 2"
 						y= "salir"
-		print estado
-		if estado=='sale' or estado== 'entra':
-			print estado
-			estado_queue.put(estado)
-			time.sleep(1)
+				estado_queue.put("sale")
+
+		print estado_queue.get()
+		if estado_queue.get()=='sale' or estado_queue.get()== 'entra':
+			print estado_queue.get()
+			time.sleep(.1)
+		
+
 
 def decidir(estado_queue, permiso_queue):
 	### DESCOMENTAR EN PCDUINO
