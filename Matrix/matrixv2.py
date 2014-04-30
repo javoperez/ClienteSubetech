@@ -103,12 +103,12 @@ def decidir(estado_queue, permiso_queue):
 	gpio.pinMode(rojo, gpio.OUTPUT)
 	gpio.pinMode(verde, gpio.OUTPUT)
 	gpio.pinMode(alarma, gpio.OUTPUT)
-	if estado_queue.qsize>0:
+	if estado_queue.qsize==0:
 		Estado= estado_queue.get()
 	else:
 		Estado= False
 
-	if permiso_queue.qsize>0:
+	if permiso_queue.qsize=0:
 		Permiso=permiso_queue.get()
 	else:
 		Permiso= False
