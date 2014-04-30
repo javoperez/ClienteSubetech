@@ -95,7 +95,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 			print estado_queue.get()
 			time.sleep(.1)
 		
-
+##PRUEBA
 
 def decidir(estado_queue, permiso_queue):
 	### DESCOMENTAR EN PCDUINO
