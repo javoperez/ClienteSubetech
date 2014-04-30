@@ -5,7 +5,7 @@ import time
 import multiprocessing
 import gpio
 
-y=None
+y=""
 sensor1 = "gpio5"
 sensor2="gpio4"
 
@@ -15,6 +15,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 	while 1:
 		A=gpio.digitalRead(sensor1)
 		B= gpio.digitalRead(sensor2)
+		print A, B
 
 		if A==True:
 			while B==False and y!= "salir":
@@ -28,7 +29,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 					y= "salir"
 			estado_queue.put("entra")
 
-		y=None
+		y=""
 			
 		if B==True:
 				
@@ -43,11 +44,8 @@ def detectarpcduino(estado_queue, permiso_queue):
 						y= "salir"
 				estado_queue.put("sale")
 		
-		if estado_queue.get()=='sale' or estado_queue.get()== 'entra':
-			print estado_queue.get()
-			time.sleep(1)
-			
-		#estado= None
+		
+		time.sleep(.1)
 
 
 def main():
@@ -55,7 +53,7 @@ def main():
 	estado_queue =multiprocessing.Queue()
 	permiso_queue =multiprocessing.Queue()
 	t = multiprocessing.Process(target=detectarpcduino, args=(estado_queue,permiso_queue))
-	t.daemon = True
+	#t.daemon = True
 
 	try:
 		t.start()
