@@ -87,7 +87,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 					y= "salir"
 			estado_queue.put(False)
 		#print "estado1" , Estado
-		time.sleep(1)
+		time.sleep(.1)
 
 		
 ##PRUEBA
@@ -177,6 +177,7 @@ def main():
 		#estado_queue.put(temporalestado)
 
 		print "estado es: " , temporalestado	
+		print "sigo de largo"
 
 		Latitud=""
 		Longitud=""
