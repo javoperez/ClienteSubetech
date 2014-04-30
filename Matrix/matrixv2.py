@@ -153,8 +153,8 @@ def main():
 		time.sleep(.1)
 
 		##INICIALIZO VARIABLES por primera vez
-		permiso_queue.put(False)
-		estado_queue.put(False)
+		permiso_queue.put("inicial")
+		estado_queue.put("inicial")
 		
 	except:
 		print "ERROR: No se pudieron crear los procesos de comunicación."
