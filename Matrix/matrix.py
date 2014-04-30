@@ -59,10 +59,8 @@ y=None
 def detectarpcduino(estado_queue, permiso_queue):
 	estado_queue.put(None)
 	while 1:
-		print "pase"
 		A=gpio.digitalRead(sensor1)
 		B= gpio.digitalRead(sensor2)
-
 		if A==True:
 			while B==False and y!= "salir":
 				#print "ciclo 1"
@@ -75,7 +73,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 					y= "salir"
 			estado_queue.put("entra")
 
-		y=None
+		y=""
 			
 		if B==True:
 				
@@ -89,22 +87,20 @@ def detectarpcduino(estado_queue, permiso_queue):
 							#Sprint "Ciclo 2"
 						y= "salir"
 				estado_queue.put("sale")
-
-		print estado_queue.get(), "aqui"
+			
 		time.sleep(.1)
 		
 ##PRUEBA
 
 def decidir(estado_queue, permiso_queue):
-	pass
-
-"""	### DESCOMENTAR EN PCDUINO
+	### DESCOMENTAR EN PCDUINO
 	rojo = "gpio6"
 	verde = "gpio7"
-	alarma= "gpio9"
+	alarma= "gpio8"
 	gpio.pinMode(rojo, gpio.OUTPUT)
 	gpio.pinMode(verde, gpio.OUTPUT)
 	gpio.pinMode(alarma, gpio.OUTPUT)
+	
 	while 1:
 
 		edo= estado_queue.get()
@@ -115,6 +111,7 @@ def decidir(estado_queue, permiso_queue):
 		perm= permiso_queue.get()
 		print "Estado:  ", edo
 		print "Permiso: ", perm
+		
 	
 		if edo==False and perm== False:
 			gpio.digitalWrite(alarma, gpio.LOW)
@@ -132,12 +129,13 @@ def decidir(estado_queue, permiso_queue):
 			time.sleep(3)
 			estado_queue.put(False)
 			permiso_queue.put(False)
-
+			
 		if edo==True and perm== True:
 			time.sleep(.2)
+			print "si"
 			estado_queue.put("sale")
 			permiso_queue.put(False)			
-"""
+
 def main():
 
 	print "Creando procesos de comunicación..."
