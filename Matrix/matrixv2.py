@@ -11,8 +11,6 @@ cmd= ""
 Latitud=""
 Longitud=""
 y= None
-Estado=""
-Permiso=""
 
 def leer():
 	global Latitud
@@ -59,38 +57,35 @@ sensor1 = "gpio5"
 sensor2="gpio4"
 y=None
 def detectarpcduino():
-	
 	while 1:
 		A=gpio.digitalRead(sensor1)
 		B= gpio.digitalRead(sensor2)
 		if A==True:
 			while B==False and y!= "salir":
-				print "ciclo 1A"
+				print "ciclo 1A (entra)"
 				B=gpio.digitalRead(sensor2)
 				if B==True:
 					A=False 
 					while B==True:
 						B=gpio.digitalRead(sensor2)
-						print "Ciclo 2A"
+						print "Ciclo 2A (entra)"
 					y= "salir"
-			global Estado
-			Estado=True
+			estado_queue.put(True)
 
 		y=""
 			
 		if B==True:
 				
-				while A==False  and y!= "salir":
-					print "ciclo 1B"
-					A=gpio.digitalRead(sensor1)
-					if A==True:
-						B=False 
-						while A==True:
-							A=gpio.digitalRead(sensor1)
-							print "Ciclo 2B"
-						y= "salir"
-				global Estado
-				Estado=False
+			while A==False  and y!= "salir":
+				print "ciclo 1B"
+				A=gpio.digitalRead(sensor1)
+				if A==True:
+					B=False 
+					while A==True:
+						A=gpio.digitalRead(sensor1)
+						print "Ciclo 2B"
+					y= "salir"
+			estado_queue.put(False)
 		print "estado1" , Estado
 		time.sleep(1)
 
@@ -142,15 +137,12 @@ def main():
 	global Latitud
 	global Longitud
 	global cmd
-	global Estado
-	global Permiso
-
 	cmd= "compartido"
 	print "Creando procesos de comunicación..."
-	"""	estado_queue =multiprocessing.Queue()
-	permiso_queue =multiprocessing.Queue()"""
-	t = multiprocessing.Process(target=detectarpcduino, args=())
-	t2 = multiprocessing.Process(target=decidir, args=())
+	estado_queue =multiprocessing.Queue()
+	permiso_queue =multiprocessing.Queue()
+	t = multiprocessing.Process(target=detectarpcduino, args=(estado_queue, permiso_queue))
+	t2 = multiprocessing.Process(target=decidir, args=(estado_queue, permiso_queue))
 
 	t.daemon = True
 	t2.daemon = True
@@ -159,6 +151,10 @@ def main():
 		time.sleep(.1)
 		t2.start()
 		time.sleep(.1)
+
+		##INICIALIZO VARIABLES por primera vez
+		permiso_queue.put(False)
+		estado_queue.put(False)
 		
 	except:
 		print "ERROR: No se pudieron crear los procesos de comunicación."
@@ -175,9 +171,12 @@ def main():
 		else:
 			Permiso=False
 		time.sleep(1)
-		print "permiso: ", Permiso
-		print "estado: ", Estado
-		
+		#IMPRIMIR PERMISO Y ESTADO	
+		temporalestado= estado_queue.get()
+		estado_queue.put(temporalestado)
+
+		print "estado es: " , temporalestado	
+
 		Latitud=""
 		Longitud=""
 		
