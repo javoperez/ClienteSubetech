@@ -108,7 +108,7 @@ def decidir(estado_queue, permiso_queue):
 	else:
 		Estado= False
 
-	if permiso_queue.qsize=0:
+	if permiso_queue.qsize==0:
 		Permiso=permiso_queue.get()
 	else:
 		Permiso= False
