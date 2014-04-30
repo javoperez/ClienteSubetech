@@ -87,6 +87,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 					y= "salir"
 			estado_queue.put(False)
 		#print "estado1" , Estado
+		print estado_queue.qsize()
 		time.sleep(.1)
 
 		
@@ -94,7 +95,7 @@ def detectarpcduino(estado_queue, permiso_queue):
 
 def decidir(estado_queue, permiso_queue):
 	pass
-"""	
+
 	### DESCOMENTAR EN PCDUINO
 	rojo = "gpio6"
 	verde = "gpio7"
@@ -102,7 +103,17 @@ def decidir(estado_queue, permiso_queue):
 	gpio.pinMode(rojo, gpio.OUTPUT)
 	gpio.pinMode(verde, gpio.OUTPUT)
 	gpio.pinMode(alarma, gpio.OUTPUT)
-	
+	if estado_queue.qsize>0:
+		Estado= estado_queue.get()
+	else:
+		Estado= False
+
+	if permiso_queue.qsize>0:
+		Permiso=permiso_queue.get()
+	else:
+		Permiso= False
+		
+
 	while 1:
 						
 		if Estado==False and Permiso== False:
@@ -131,7 +142,7 @@ def decidir(estado_queue, permiso_queue):
 			global Permiso
 			Estado=False
 			Permiso=False		
-		time.sleep(1)"""
+		time.sleep(1)
 
 def main():
 	global Latitud
@@ -172,12 +183,8 @@ def main():
 			Permiso=False
 		time.sleep(1)
 		#IMPRIMIR PERMISO Y ESTADO	
-		print estado_queue.qsize()
-		temporalestado= estado_queue.get()
-		#estado_queue.put(temporalestado)
-
-		print "estado es: " , temporalestado	
-		print "sigo de largo"
+		#temporalestado= estado_queue.get()
+		permiso_queue.put(Permiso)
 
 		Latitud=""
 		Longitud=""
