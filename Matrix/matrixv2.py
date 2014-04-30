@@ -151,7 +151,7 @@ def main():
 		time.sleep(.1)
 		t2.start()
 		time.sleep(.1)
-"""
+		"""
 		##INICIALIZO VARIABLES por primera vez
 		permiso_queue.put("inicial")
 		estado_queue.put("inicial")
@@ -174,7 +174,7 @@ def main():
 		#IMPRIMIR PERMISO Y ESTADO	
 		print estado_queue.qsize()
 		temporalestado= estado_queue.get()
-		estado_queue.put(temporalestado)
+		#estado_queue.put(temporalestado)
 
 		print "estado es: " , temporalestado	
 
