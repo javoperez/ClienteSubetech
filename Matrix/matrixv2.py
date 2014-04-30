@@ -56,7 +56,7 @@ def conectar():
 sensor1 = "gpio5"
 sensor2="gpio4"
 y=None
-def detectarpcduino():
+def detectarpcduino(estado_queue, permiso_queue):
 	while 1:
 		A=gpio.digitalRead(sensor1)
 		B= gpio.digitalRead(sensor2)
@@ -92,7 +92,7 @@ def detectarpcduino():
 		
 ##PRUEBA
 
-def decidir():
+def decidir(estado_queue, permiso_queue):
 	pass
 """	
 	### DESCOMENTAR EN PCDUINO
