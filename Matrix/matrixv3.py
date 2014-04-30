@@ -93,12 +93,12 @@ def detectarpcduino(estado_queue, permiso_queue):
 						print "Escalon 2B (Persona sale)"
 					y= "salir"
 			estado=False
-		###################
+		################### VERIFICA PERMISO DE ENTRADA
 
 		Permiso=permiso_queue.get()
 		permiso_queue.put(Permiso)
-		print "el estado es: ", estado
-		print "el permiso es: ", Permiso
+		print "La lectura de entradas es: ", estado
+		print "el permiso de entrar es: ", Permiso
 		print "tamaño", permiso_queue.qsize()
 						
 		if estado==False and Permiso== False:
